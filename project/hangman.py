@@ -130,8 +130,8 @@ button_img_arr = []
 button_hover_arr = []
 
 for i in range(9):
-    gen_image = pygame.image.load('resources/images/gen' + str(i + 1) + '.png')
-    gen_hover = pygame.image.load('resources/images/gen' + str(i + 1) + '_hover.png')
+    gen_image = pygame.image.load('resources/images/buttons/gen' + str(i + 1) + '.png')
+    gen_hover = pygame.image.load('resources/images/buttons/gen' + str(i + 1) + '_hover.png')
     button_hover_arr.append(gen_hover)
     button_img_arr.append(gen_image)
     if i < 3:
@@ -184,9 +184,9 @@ while running:
                     add_letter('e')
                 case pygame.K_r:
                     add_letter('r')
-                case pygame.K_q:
+                case pygame.K_t:
                     add_letter('t')
-                case pygame.K_q:
+                case pygame.K_z:
                     add_letter('z')
                 case pygame.K_u:
                     add_letter('u')
