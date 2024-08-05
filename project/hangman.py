@@ -163,6 +163,7 @@ button_img_arr = []
 button_hover_arr = []
 lives_img_arr = []
 end_menu = False
+bg_print = True
 
 bg_game = pygame.transform.scale(pygame.image.load('resources/images/background_game.jpg'), (SCREEN_WIDTH,SCREEN_HEIGHT))
 retry_image = pygame.transform.scale(pygame.image.load('resources/images/buttons/retry.png'), (BUTTON_WIDTH, BUTTON_HEIGHT))
@@ -196,7 +197,11 @@ while running:
     # pygame.QUIT event means the user clicked X to close your window
 
     while menu:
-
+        if bg_print:
+            blank_pokemon = ''
+            screen.blit(bg_game, (0, 0))
+            bg_print = False
+            lives = 0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 menu = False
@@ -206,7 +211,6 @@ while running:
                 for button in button_arr:
                     if button.hover:
                         button.generate_pokemon(button.number)
-                        blank_pokemon = ''
                         menu = False
             
             for button in button_arr:
@@ -283,7 +287,7 @@ while running:
                     add_letter('-')
                 case pygame.K_PERIOD:
                     add_letter('.')               
-    
+
     while end_menu:
         retry_button = Button( 20 , SCREEN_HEIGHT - 95 , retry_image, 10)
         retry_button.end_btn_draw(retry_image, retry_hover)
@@ -298,28 +302,23 @@ while running:
                     if retry_button:
                         end_menu = False
                         menu = True
-                        lives = 0
+                        bg_print = True
                         letter_arr = []
                         pokemon.types = []
                         pokemon.picture = blank
-                        
-                        screen.blit(bg_game, (0, 0))
 
         pygame.display.flip()
         clock.tick(60)
 
-    if (pokemon.name != blank_pokemon and blank_pokemon != '') or lives >= 5:
+    if pokemon.name != blank_pokemon or lives >= 5:
         # fill the screen with a color to wipe away anything from last frame
         if lives >= 5:
-            screen.blit(bg_game, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            screen.blit(bg_game, (0,0))
             screen.blit(pokemon.picture, (SCREEN_WIDTH / 2 - 225, 200))
             print_text(pokemon.name, SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 120)
-            end_menu = True
         else:
             screen.blit(bg_game, (0, 0))
             screen.blit(lives_img_arr[lives], (SCREEN_WIDTH / 2 -100, 10))
-
-        print_text(blank_pokemon, SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 80)
 
         element_counter = 0
         for element in pokemon.types:
@@ -331,6 +330,21 @@ while running:
                 blank_pokemon = blank_pokemon + '-'
 
     # RENDER YOUR GAME HERE
+
+    if ((pokemon.name == blank_pokemon and blank_pokemon != '') or lives >= 5) and menu == False:
+        screen.blit(bg_game, (0,0))
+        screen.blit(pokemon.picture, (SCREEN_WIDTH / 2 - 225, 200))
+        print_text(pokemon.name, SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 120)
+        screen.blit(lives_img_arr[lives], (SCREEN_WIDTH / 2 -100, 10))
+
+        element_counter = 0
+        for element in pokemon.types:
+            print_text(element, 0, 40 * element_counter)
+            element_counter += 1
+
+        end_menu = True
+
+    print_text(blank_pokemon, SCREEN_WIDTH / 2 - 50, SCREEN_HEIGHT - 80)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
